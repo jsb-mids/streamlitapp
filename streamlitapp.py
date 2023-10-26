@@ -37,7 +37,7 @@ if prompt: # Prompt for user input and save it to chat history
         
 
 # Display chat history
-for message in st.session_state.messages:
+for idx, message in enumerate(st.session_state.messages):
     if message["role"] == "user":
         with st.chat_message(message["role"]):
             st.write(message["content"])
@@ -67,6 +67,16 @@ for message in st.session_state.messages:
                     else:
                         col.write("Failed to load image response.")
                 start_idx = end_idx
+        # if idx == len(st.session_state.messages) - 1:
+        form_key = f"feedback_form_{idx}"
+        with st.form(key=form_key, clear_on_submit=True):
+            st.write("Was this helpful?")
+            thumbs_up_clicked = st.form_submit_button("👍 Thumbs Up")
+            thumbs_down_clicked = st.form_submit_button("👎 Thumbs Down")
+            if thumbs_up_clicked:
+                st.write("You selected: Thumbs Up")
+            elif thumbs_down_clicked:
+                st.write("You selected: Thumbs Down")
     else:
         with st.chat_message(message["role"]):
             st.write(message["content"])
