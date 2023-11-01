@@ -3,6 +3,8 @@ import streamlit as st
 import requests
 from PIL import Image
 from io import BytesIO
+import time 
+
 
 # Load the base URL from the environment variable
 fastapi_base_url = os.getenv("FASTAPI_BASE_URL", "http://127.0.0.1:8000")
@@ -17,26 +19,26 @@ if "messages" not in st.session_state.keys(): # Initialize the chat messages his
 
 prompt = st.chat_input("Your question")
 if prompt: # Prompt for user input and save it to chat history
-    # Use the base URL to construct the complete URL
-    chat_url = f"{fastapi_base_url}/chat"
-    resp = requests.post(chat_url, json={"content": prompt})
-    if resp.status_code == 200:
-        data = resp.json()
-        user_message = {"role": "user", "content": prompt}
-        st.session_state.messages.append(user_message)
+    with st.spinner('Looking for products that match your description. This might take a minute...'):
+        # Use the base URL to construct the complete URL
+        chat_url = f"{fastapi_base_url}/chat"
+        resp = requests.post(chat_url, json={"content": prompt})
+        if resp.status_code == 200:
+            data = resp.json()
+            user_message = {"role": "user", "content": prompt}
+            st.session_state.messages.append(user_message)
 
-        assistant_response = {"role": "assistant", "content": data["response"]}
-        # Add assistant's text response
-        st.session_state.messages.append(assistant_response)
+            assistant_response = {"role": "assistant", "content": data["response"]}
+            # Add assistant's text response
+            st.session_state.messages.append(assistant_response)
 
-        product_details_list = data.get("product_details", [])  # Get product details as a list
-        if product_details_list:
-            image_messages = {"role": "image", "content": product_details_list}
-            st.session_state.messages.append(image_messages)
+            product_details_list = data.get("product_details", [])  # Get product details as a list
+            if product_details_list:
+                image_messages = {"role": "image", "content": product_details_list}
+                st.session_state.messages.append(image_messages)
             
-        
-
 # Display chat history
+form_id = 0
 for idx, message in enumerate(st.session_state.messages):
     if message["role"] == "user":
         with st.chat_message(message["role"]):
@@ -68,15 +70,22 @@ for idx, message in enumerate(st.session_state.messages):
                         col.write("Failed to load image response.")
                 start_idx = end_idx
         # if idx == len(st.session_state.messages) - 1:
-        form_key = f"feedback_form_{idx}"
-        with st.form(key=form_key, clear_on_submit=True):
-            st.write("Was this helpful?")
-            thumbs_up_clicked = st.form_submit_button("👍 Thumbs Up")
-            thumbs_down_clicked = st.form_submit_button("👎 Thumbs Down")
+        form_id += 1
+        form_key = f"feedback_form_{form_id}"
+        form = st.form(key=form_key, clear_on_submit=True)
+        with form:
+            form.write("Was this helpful?")
+            col1, col2 = st.columns(2)
+            with col1:
+                thumbs_up_clicked = st.form_submit_button("👍 Thumbs Up")
+            with col2:
+                thumbs_down_clicked = st.form_submit_button("👎 Thumbs Down")
             if thumbs_up_clicked:
-                st.write("You selected: Thumbs Up")
+                form.empty()
+                form.success("Thanks for your feedback!")
             elif thumbs_down_clicked:
-                st.write("You selected: Thumbs Down")
+                form.empty()
+                form.write("Sorry, that wasn't helpful. Do you mind providing more details on what you're looking for?")
     else:
         with st.chat_message(message["role"]):
             st.write(message["content"])
