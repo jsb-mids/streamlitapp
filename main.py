@@ -35,6 +35,7 @@ class ProductDetails(BaseModel):
     title: str
     url: str
     price: float
+    href: str
 
 class Response(BaseModel):
     response: str

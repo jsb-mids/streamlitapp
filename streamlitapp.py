@@ -60,12 +60,18 @@ for idx, message in enumerate(st.session_state.messages):
                     image_url = product_details.get("url", "")
                     title = product_details.get("title", "")
                     price = product_details.get("price", "")
+                    href = product_details.get("href", "")
                     caption = f"{title}: ${price}"
                     image_response = requests.get(image_url)
                     if image_response.status_code == 200:
                         image_bytes = BytesIO(image_response.content)
                         image = Image.open(image_bytes)
-                        col.image(image, caption=caption, use_column_width=True)
+
+                        container_html = f'<div><h6>{caption}</h6><a href="{href}" target="_blank" style="display: block;"><img src="{image_url}" alt="{caption}" /><div></div></a></div><br>'
+                        # Render the HTML container
+                        st.markdown(container_html, unsafe_allow_html=True)
+                        # col.write(f"{title}: ${price}")
+                        # col.image(image, caption=caption, use_column_width=True)
                     else:
                         col.write("Failed to load image response.")
                 start_idx = end_idx
