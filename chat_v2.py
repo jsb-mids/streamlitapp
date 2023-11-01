@@ -28,10 +28,6 @@ import openai
 
 """## 2.Set Variables"""
 
-# #openai.api_key = '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'
-# openai.api_key = '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'
-# os.environ['OPENAI_API_KEY'] = "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"
-
 load_dotenv(find_dotenv())
 API_KEY = os.getenv("OPENAI_API_KEY")
 openai.api_key = API_KEY

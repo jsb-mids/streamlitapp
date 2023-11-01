@@ -44,7 +44,8 @@ for idx, message in enumerate(st.session_state.messages):
         with st.chat_message(message["role"]):
             st.write(message["content"])
     elif message["role"] == "image":
-        with st.expander("Products based on your inputs:", expanded=True):  
+        st.markdown('<span style="font-size: 15px;">Products based on your inputs:</span>', unsafe_allow_html=True)
+        with st.expander("", expanded=True):  
             row_images = message["content"]
             cols = st.columns(4)  # Display images in 4 columns grid
             
