@@ -47,11 +47,14 @@ class Response(BaseModel):
 async def chat_with_bot(message: Message):
     user_message = message.content
     bot_response, uuids = get_response(user_message)
-    product_details_list =   get_product_details(uuids)
-    product_details_objects = []
-    for product_details in product_details_list:
-        product_details_objects.append(ProductDetails(**product_details))
-    return Response(response=bot_response, product_details=product_details_objects)
+    if uuids is None:
+        return Response(response=bot_response, product_details=[])
+    else:
+        product_details_list =   get_product_details(uuids)
+        product_details_objects = []
+        for product_details in product_details_list:
+            product_details_objects.append(ProductDetails(**product_details))
+        return Response(response=bot_response, product_details=product_details_objects)
 
 
 # Health endpoint

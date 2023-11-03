@@ -38,7 +38,7 @@ if prompt: # Prompt for user input and save it to chat history
                 st.session_state.messages.append(image_messages)
             
 # Display chat history
-form_id = 0
+form_id = 0 # initializing id for form key 
 for idx, message in enumerate(st.session_state.messages):
     if message["role"] == "user":
         with st.chat_message(message["role"]):
