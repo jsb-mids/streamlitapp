@@ -212,7 +212,7 @@ def get_response(message):
         bot_reply = chat.choices[0].message.content
 
         adnl_info_prefix = (
-            "Is the following message prompting the user for additional information"
+            "Is there a question mark anywhere in the message provided below"
             "Respond in yes or no only."
             "Here is the message: "
         )
