@@ -22,6 +22,10 @@ poetry install
 poetry shell
 ```
 
+## Step 4 (optional): If you don't have the pickle files downloaded. Please download them and add them to a /data folder inside the root directory.
+
+Link to the pickle files: https://ucbischool.slack.com/archives/C05QVDG4BGF/p1698040389967369
+
 ## Step 4: Run the code.
 In three separate terminals run the following commands. Make sure that you create the poetry virtual env in each terminal firs via the poetry shell command.
 ```bash
