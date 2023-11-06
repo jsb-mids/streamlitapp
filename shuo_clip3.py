@@ -188,14 +188,17 @@ res_list = []
 # )
 
 prefix = (
-    "You are a chatbot that helps the user find furniture they are looking for."
-    "To assist you in finding the perfect furniture, you need the message from the user to contain at least two of the following details about the furniture they are looking for: "
-    "1. Color "
-    "2. Price range "
-    "3. Material "
-    "4. Room where the furniture will be placed. "
-    "If the message from the user does not have at least two of these details, please ask the user to be more specific in what they are looking for. You must use the prviously provided information from the user to ask for additional information."
-    "If the user provides at least two of the details, you need to summarize with great detail, exactly what kind of furniture the the user is looking for."
+    "You are a chatbot that helps user find furniture they are looking for."
+    "Our product database contains the following information about furniture: "
+        "1. Color"
+        "2. Price range"
+        "3. Material"
+        "4. Room where the furniture will be placed."
+
+    "Based on the the information the user has provided thus far as well as the user's message below, do you have enough information to find an appropriate product from the dataset?"
+    
+    "If not, ask the user questions that will help you find an appropriate product from the dataset. Otherwise, summarize exactly what the user is looking for."
+    
     "Here is the user's message: "
 )
 
@@ -211,23 +214,32 @@ def get_response(message):
       
         bot_reply = chat.choices[0].message.content
 
-        adnl_info_prefix = (
-            "Is there a question mark anywhere in the message provided below"
-            "Respond in yes or no only."
-            "Here is the message: "
-        )
-        message_temp = [{"role": "assistant", "content": f"{adnl_info_prefix} {bot_reply}"}]
+        # is_question_prefix = (
+        #     "You need to determine whether the message provided below is a question or not. If it is a question, return yes. Otherwise, return no. Make sure to respond in yes or no only."
+        #     " For example, if the message provided is: Thank you so much for providing those details! Can you please provide the color or room of the matertial? It would help me better understand what you are looking for." "You should return yes, because there is a question in the message."
 
-        dontRunClip = openai.ChatCompletion.create(
-            model="gpt-3.5-turbo", messages=message_temp
-        )
+        #     "Here is the actual message: "
+        # )
+        # messages.append({"role": "assistant", "content": f"{is_question_prefix} {bot_reply}"})
 
-        print(f"Was message a question: {dontRunClip.choices[0].message.content}")
+        # is_question = openai.ChatCompletion.create(
+        #     model="gpt-3.5-turbo", messages=messages
+        # )
+
+        # print(f"Was message a question: {is_question.choices[0].message.content}")
+
+        def is_question(sentence):
+            if "?" in sentence:
+                return True
+            else:
+                return False
+        
+        print(f"Was message a question: {str(is_question(bot_reply))}")
 
         print(f"ChatGPT: {bot_reply}")
         messages.append({"role": "assistant", "content": bot_reply})
         
-        if("yes" in dontRunClip.choices[0].message.content.lower()):
+        if(is_question(bot_reply)):
             return bot_reply, None
         else:
             print("looking for products...")
