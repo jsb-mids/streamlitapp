@@ -1,5 +1,7 @@
 .env
+shop-buddy.pem
 .DS_Store
+.streamlit
 __pycache__
 __init__.py
 data

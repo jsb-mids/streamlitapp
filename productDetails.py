@@ -1,6 +1,8 @@
 import pandas as pd
+from s3connect import getObject
 
-furniture_df = pd.read_csv('./data/cleaned_target_furniture_dataset.csv')
+cleaned_dataset = getObject('cleaned_target_furniture_dataset.csv')
+furniture_df = pd.read_csv(cleaned_dataset['Body'])
 
 def get_product_details(uniq_ids):
     product_details_list = []

@@ -12,6 +12,9 @@ import openai
 import os
 from dotenv import load_dotenv,find_dotenv
 
+from s3connect import getObject
+
+
 load_dotenv(find_dotenv())
 API_KEY = os.getenv("OPENAI_API_KEY")
 openai.api_key = API_KEY
@@ -112,8 +115,9 @@ def find_products(text_input, category_df, image_pickle_path):
     # do image matching
     res = []
     for cat in res_set:
-        store_path = osp.join(image_pickle_path, f"{cat}.pkl")
-        cat_res = read_pickle(store_path)
+        cat_res = getObject(osp.join(image_pickle_path, f"{cat}.pkl"))
+        # store_path = getObject(osp.join(image_pickle_path, f"{cat}.pkl"))
+        # cat_res = read_pickle(store_path)
         res.append(cat_res)
     res = pd.concat(res, axis=0)
     
@@ -149,12 +153,14 @@ def show_images(res):
     
     
 def image_path(uid):
-    return osp.join(image_storage, f"{uid}.jpg")
+    return getObject(osp.join(image_storage, f"{uid}.jpg"))
 
 
-def load_data(pickle_path):
-    category_df = read_pickle(osp.join(pickle_path, "categories.pkl"))
-    meta_df = read_pickle(osp.join(pickle_path, "meta_data.pkl"))
+def load_data():
+    category_df = getObject("pickle/categories.pkl")
+    meta_df = getObject("pickle/meta_data.pkl")
+    # category_df = read_pickle("pickle/categories.pkl")
+    # meta_df = read_pickle("pickle/meta_data.pkl")
     
     device = "cuda" if torch.cuda.is_available() else "cpu"
     model, preprocess = clip.load("ViT-B/32", device=device)
@@ -162,9 +168,9 @@ def load_data(pickle_path):
     return device, model, preprocess, category_df, meta_df
 
 
-image_storage = "data/image"
-pickle_path = "data/pickle"
-image_pickle_path = "data/image_pickle"
+image_storage = "image"
+# pickle_path = "pickle"
+image_pickle_path = "image_pickle"
 
 with Timer():
     (
@@ -173,7 +179,7 @@ with Timer():
         preprocess,
         category_df,
         meta_df
-    ) = load_data(pickle_path)
+    ) = load_data()
 
 
 

@@ -32,6 +32,7 @@ flask = "^3.0.0"
 fastapi-cache2 = {version = "0.1.9", extras = ["redis"]}
 redis = "^4.6.0"
 neo4j = "^5.13.0"
+boto3 = "^1.28.84"
 
 
 [build-system]
