@@ -1,16 +1,13 @@
 import torch
-import torch.nn as nn
 import clip
 import pandas as pd
 import os.path as osp
 import pickle
 from operator import itemgetter
-import matplotlib.pyplot as plt
-import matplotlib.image as mpimg
 import time
 import openai
 import os
-from dotenv import load_dotenv,find_dotenv
+from dotenv import load_dotenv, find_dotenv
 
 load_dotenv(find_dotenv())
 API_KEY = os.getenv("OPENAI_API_KEY")
@@ -26,16 +23,14 @@ def read_pickle(dir):
 def write_pickle(dir, data):
     with open(dir, 'wb') as handle:
         pickle.dump(data, handle, protocol=pickle.HIGHEST_PROTOCOL)
-        
+
 
 class Timer:
     def __init__(self):
-
         self.t1 = None
 
     @staticmethod
     def delta_to_string(td):
-
         res_list = []
 
         def format():
@@ -43,7 +38,7 @@ class Timer:
 
         seconds = td % 60
         td //= 60
-        res_list.append(f"{round(seconds,3)} seconds")
+        res_list.append(f"{round(seconds, 3)} seconds")
 
         if td <= 0:
             return format()
@@ -67,14 +62,11 @@ class Timer:
         return format()
 
     def __enter__(self):
-
         self.t1 = time.time()
 
     def __exit__(self, *args, **kwargs):
-
         t2 = time.time()
         td = t2 - self.t1
-
         print(self.delta_to_string(td))
 
 
@@ -83,7 +75,6 @@ def top_n(input_dict, n):
 
 
 def find_products(text_input, category_df, image_pickle_path):
-
     text_input = [text_input]
 
     # stage one, compare categories
@@ -94,12 +85,10 @@ def find_products(text_input, category_df, image_pickle_path):
     encoded_texts = clip.tokenize(text_input).to(device)
 
     with torch.no_grad():
-
         text_features = model.encode_text(encoded_texts)
-
         categories_features /= categories_features.norm(dim=-1, keepdim=True)
         text_features /= text_features.norm(dim=-1, keepdim=True)
-        similarity =  100 * categories_features @ text_features.T
+        similarity = 100 * categories_features @ text_features.T
 
     res = dict(zip(categories, similarity.reshape(-1).tolist()))
 
@@ -108,7 +97,7 @@ def find_products(text_input, category_df, image_pickle_path):
     n = 10
     res = res[:n]
     res_set = set([r[0] for r in res])
-    
+
     # do image matching
     res = []
     for cat in res_set:
@@ -116,89 +105,58 @@ def find_products(text_input, category_df, image_pickle_path):
         cat_res = read_pickle(store_path)
         res.append(cat_res)
     res = pd.concat(res, axis=0)
-    
+
     uniq_ids = list(res["uid"].values)
     image_features = torch.stack(list(res["encoded_image"].values))
-    similarity =  100 * image_features @ text_features.T
+    similarity = 100 * image_features @ text_features.T
     res = dict(zip(uniq_ids, similarity.reshape(-1).tolist()))
     res = sorted(res.items(), key=itemgetter(1), reverse=True)
-    
+
     n = 5
     res = res[:n]
     res_set = set([r[0] for r in res])
-    
+
     return res_set
-
-
-def show_images(res):
-    n = len(res)
-    fig, ax = plt.subplots(1, n)
-
-    fig.set_figheight(5)
-    fig.set_figwidth(5 * n)
-
-    for i, image in enumerate(res):
-        img_path = image_path(image)
-        img = mpimg.imread(img_path)
-        ax[i].imshow(img)
-        ax[i].axis('off')
-        # ax[i].set_title(get_label(image), fontsize=8)
-
-    plt.subplots_adjust(wspace=0, hspace=0.1)
-    plt.show()
-    
-    
-def image_path(uid):
-    return osp.join(image_storage, f"{uid}.jpg")
 
 
 def load_data(pickle_path):
     category_df = read_pickle(osp.join(pickle_path, "categories.pkl"))
     meta_df = read_pickle(osp.join(pickle_path, "meta_data.pkl"))
-    
+
     device = "cuda" if torch.cuda.is_available() else "cpu"
     model, preprocess = clip.load("ViT-B/32", device=device)
-    
+
     return device, model, preprocess, category_df, meta_df
 
 
-image_storage = "data/image"
 pickle_path = "data/pickle"
 image_pickle_path = "data/image_pickle"
 
 with Timer():
     (
         device,
-        model, 
+        model,
         preprocess,
         category_df,
         meta_df
     ) = load_data(pickle_path)
 
-
-
-
-    messages = []
+messages = []
 
 res_list = []
-
-# prefix = (
-#     "considering what the user asked before, what is the user looking for with the following request."
-#     " Only respond with the product description no more than 30 words:"
-# )
 
 prefix = (
     "You are a chatbot that helps user find furniture they are looking for."
     "Our product database contains the following information about furniture: "
-        "1. Color"
-        "2. Price range"
-        "3. Material"
-        "4. Room where the furniture will be placed."
+    "1. Color"
+    "2. Price range"
+    "3. Material"
+    "4. Room where the furniture will be placed."
 
     "Based on the the information the user has provided thus far as well as the user's message below, do you have enough information to find an appropriate product from the dataset?"
-    
+
     "If not, ask the user questions that will help you find an appropriate product from the dataset. Otherwise, summarize exactly what the user is looking for."
-    
+
     "Here is the user's message: "
 )
 
@@ -211,42 +169,21 @@ def get_response(message):
         chat = openai.ChatCompletion.create(
             model="gpt-3.5-turbo", messages=messages
         )
-      
+
         bot_reply = chat.choices[0].message.content
 
-        # is_question_prefix = (
-        #     "You need to determine whether the message provided below is a question or not. If it is a question, return yes. Otherwise, return no. Make sure to respond in yes or no only."
-        #     " For example, if the message provided is: Thank you so much for providing those details! Can you please provide the color or room of the matertial? It would help me better understand what you are looking for." "You should return yes, because there is a question in the message."
-
-        #     "Here is the actual message: "
-        # )
-        # messages.append({"role": "assistant", "content": f"{is_question_prefix} {bot_reply}"})
-
-        # is_question = openai.ChatCompletion.create(
-        #     model="gpt-3.5-turbo", messages=messages
-        # )
-
-        # print(f"Was message a question: {is_question.choices[0].message.content}")
-
         def is_question(sentence):
-            if "?" in sentence:
-                return True
-            else:
-                return False
-        
+            return "?" in sentence
+
         print(f"Was message a question: {str(is_question(bot_reply))}")
 
         print(f"ChatGPT: {bot_reply}")
         messages.append({"role": "assistant", "content": bot_reply})
-        
-        if(is_question(bot_reply)):
+
+        if is_question(bot_reply):
             return bot_reply, None
         else:
             print("looking for products...")
             result = find_products(bot_reply, category_df, image_pickle_path)
             print("found products")
             return bot_reply, result
-
-        
-        
-        
