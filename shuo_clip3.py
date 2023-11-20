@@ -82,7 +82,7 @@ def find_products(text_input, category_df, image_pickle_path):
     categories = list(category_df["category"].values)
 
     categories_features = torch.stack(list(category_df["encoded_category"].values))
-    encoded_texts = clip.tokenize(text_input).to(device)
+    encoded_texts = clip.tokenize(text_input, truncate=True).to(device)
 
     with torch.no_grad():
         text_features = model.encode_text(encoded_texts)

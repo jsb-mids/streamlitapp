@@ -6,3 +6,5 @@ data
 Dockerfile
 streamlitapp_old.py
 dump.rdb
+.devcontainer
+shop-buddy.pem
