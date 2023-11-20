@@ -43,7 +43,7 @@ class Response(BaseModel):
     
 
 @app.post("/chat")
-@cache()
+#@cache()
 async def chat_with_bot(message: Message):
     user_message = message.content
     bot_response, uuids = get_response(user_message)
