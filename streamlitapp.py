@@ -7,7 +7,7 @@ import time
 
 
 # Load the base URL from the environment variable
-fastapi_base_url = os.getenv("FASTAPI_BASE_URL", "http://172.31.6.134:80")
+fastapi_base_url = os.getenv("FASTAPI_BASE_URL", "http://50.18.234.193:80")
 
 st.set_page_config(page_title="Chat with our furniture finder", page_icon="🦙", layout="centered", initial_sidebar_state="auto", menu_items=None)
 st.title("Chat with our furniture finder")
