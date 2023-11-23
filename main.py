@@ -15,8 +15,9 @@ from fastapi_cache.decorator import cache
 
 from redis import asyncio as aioredis
 
-#redis_url = os.getenv("service_url", "localhost")
-#redis_port = os.getenv("redis_port", "6379")
+redis_url = os.getenv("service_url", "localhost")
+redis_port = os.getenv("redis_port", "6379")
+# url = f"redis://{redis_url}:{redis_port}"
 url = "redis://localhost:6379"
 
 
@@ -43,7 +44,7 @@ class Response(BaseModel):
     
 
 @app.post("/chat")
-#@cache()
+@cache()
 async def chat_with_bot(message: Message):
     user_message = message.content
     bot_response, uuids = get_response(user_message)
