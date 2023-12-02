@@ -19,13 +19,14 @@ if "messages" not in st.session_state.keys(): # Initialize the chat messages his
 
 prompt = st.chat_input("Your question")
 if prompt: # Prompt for user input and save it to chat history
-    with st.spinner('Looking for products that match your description. This might take a minute...'):
+    with st.status('Looking for products that match your description. This might take a minute...') as status:
         # Use the base URL to construct the complete URL
         chat_url = f"{fastapi_base_url}/chat"
         resp = requests.post(chat_url, json={"content": prompt})
         if resp.status_code == 200:
             data = resp.json()
             user_message = {"role": "user", "content": prompt}
+            status.update(label="Download complete!", state="complete", expanded=True)
             st.session_state.messages.append(user_message)
 
             assistant_response = {"role": "assistant", "content": data["response"]}
@@ -35,6 +36,7 @@ if prompt: # Prompt for user input and save it to chat history
             product_details_list = data.get("product_details", [])  # Get product details as a list
             if product_details_list:
                 image_messages = {"role": "image", "content": product_details_list}
+                status.update(label="Download complete!", state="complete", expanded=True)
                 st.session_state.messages.append(image_messages)
             
 # Display chat history
