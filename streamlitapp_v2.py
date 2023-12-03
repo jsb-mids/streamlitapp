@@ -15,8 +15,6 @@ st.sidebar.markdown(
     "My Logo (sidebar) should be on top of the Navigation within the sidebar"
 )
 
-st.markdown("# Home")
-
 if "messages" not in st.session_state.keys(): # Initialize the chat messages history
     st.session_state.messages = [
         {"role": "assistant", "content": "How can I help?"}
