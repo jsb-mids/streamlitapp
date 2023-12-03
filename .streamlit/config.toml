@@ -1,9 +1,9 @@
 [theme]
 primaryColor="#F63366"
 backgroundColor="#F9F7F4"
-secondaryBackgroundColor=#e7dfd3"
+secondaryBackgroundColor="#e7dfd3"
 textColor="#262730"
 font="sans serif"
 
 [server]
-fileWatcherType = "none"
+fileWatcherType = "poll"
