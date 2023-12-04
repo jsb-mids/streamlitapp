@@ -141,6 +141,58 @@ with Timer():
         meta_df
     ) = load_data(pickle_path)
 
+def retrieve_info(query,loadfile):
+  data = loadfile.load()
+  embeddings = OpenAIEmbeddings()
+  #vetorizing and creating embedding using open source from Meta - FAISS
+  db = FAISS.from_documents(data, embeddings)
+  #getting 3 top results that are similar
+  similar_response = db.similarity_search(query, k=3)
+
+  page_contents_array = [doc.page_content for doc in similar_response]
+  # print(page_contents_array)
+
+  return page_contents_array
+
+def llm_initiate():
+  llm = ChatOpenAI(temperature=0, model="gpt-3.5-turbo-16k-0613")
+
+
+  template="""
+Interpret the user needs by understanding the input along with metadata.
+
+
+Below is the example of user needs:
+{description}
+
+Here is the list of metadata we normally need:
+{metadata}
+
+
+Please explain in one or two sentence what the user wants:"""
+
+  prompt = PromptTemplate(
+    input_variables=["description", "metadata"],
+    template=template)
+
+
+  chain = LLMChain(llm=llm, prompt=prompt)
+  return chain
+
+
+# 4. Retrieval augmented generation
+def generate_description_for_clip(description):
+#def generate_description_for_clip(description, metadata_dict):
+    chain=llm_initiate()
+   #step 1 - does similarity search
+    metadata = retrieve_info(description,loadfile)
+
+    #step 2 - puts the similar best practice in the chain model
+    response=chain.run({'description': description,'metadata': metadata})
+    #return response, metadata_dict
+    return response
+
+
 messages = []
 
 res_list = []
@@ -149,16 +201,44 @@ prefix = (
     "You are a chatbot that helps user find furniture they are looking for."
     "Our product database contains the following information about furniture: "
     "1. Color"
-    "2. Price range"
-    "3. Material"
-    "4. Room where the furniture will be placed."
+    "2. Material"
+    "3. Room where the furniture will be placed."
 
     "Based on the the information the user has provided thus far as well as the user's message below, do you have enough information to find an appropriate product from the dataset?"
 
-    "If not, ask the user questions that will help you find an appropriate product from the dataset. Otherwise, summarize exactly what the user is looking for."
+    "If you don't have more than two information listed above, ask the user questions that will help you find an appropriate product from the dataset."
+    "Otherwise, summarize exactly what the user is looking for and confirm the final information."
 
     "Here is the user's message: "
 )
+
+# def get_response(message):
+#     if message:
+#         print(f"User entered: {message}")
+#         messages.append(
+#             {"role": "user", "content": f"{prefix} {message}"},
+#         )
+#         chat = openai.ChatCompletion.create(
+#             model="gpt-3.5-turbo", messages=messages
+#         )
+
+#         bot_reply = chat.choices[0].message.content
+
+#         def is_question(sentence):
+#             return "?" in sentence
+
+#         print(f"Was message a question: {str(is_question(bot_reply))}")
+
+#         print(f"ChatGPT: {bot_reply}")
+#         messages.append({"role": "assistant", "content": bot_reply})
+
+#         if is_question(bot_reply):
+#             return bot_reply, None
+#         else:
+#             print("looking for products...")
+#             result = find_products(bot_reply, category_df, image_pickle_path)
+#             print("found products")
+#             return bot_reply, result
 
 def get_response(message):
     if message:
@@ -166,24 +246,46 @@ def get_response(message):
         messages.append(
             {"role": "user", "content": f"{prefix} {message}"},
         )
-        chat = openai.ChatCompletion.create(
-            model="gpt-3.5-turbo", messages=messages
-        )
+        needs=message
 
-        bot_reply = chat.choices[0].message.content
+        data_asset=input("Do you have any additional information to provide for your furniture search - such as color, price, material and what room it's for? :")
 
-        def is_question(sentence):
-            return "?" in sentence
+        needs=str(needs) + ' in ' +' '+ str(data_asset)
+        messages.append(
+                    {"role": "user", "content": f"{prefix} {needs}"},
+                )
 
-        print(f"Was message a question: {str(is_question(bot_reply))}")
+        reply =generate_description_for_clip(needs)
+        messages.append(
+                    {"role": "user", "content": reply },
+                )
 
-        print(f"ChatGPT: {bot_reply}")
-        messages.append({"role": "assistant", "content": bot_reply})
+        print("looking for products...")
+        result = find_products(bot_reply, category_df, image_pickle_path)
+        print("found products")
+        return reply, result
 
-        if is_question(bot_reply):
-            return bot_reply, None
-        else:
-            print("looking for products...")
-            result = find_products(bot_reply, category_df, image_pickle_path)
-            print("found products")
-            return bot_reply, result
+        # return reply
+
+        # chat = openai.ChatCompletion.create(
+        #     model="gpt-3.5-turbo", messages=messages
+        # )
+
+        # bot_reply = chat.choices[0].message.content
+
+        # def is_question(sentence):
+        #     return "?" in sentence
+
+        # print(f"Was message a question: {str(is_question(bot_reply))}")
+
+        # print(f"ChatGPT: {bot_reply}")
+        # messages.append({"role": "assistant", "content": bot_reply})
+
+        # if is_question(bot_reply):
+        #     return bot_reply, None
+        # else:
+        #     print("looking for products...")
+        #     result = find_products(bot_reply, category_df, image_pickle_path)
+        #     print("found products")
+        #     return bot_reply, result
+
