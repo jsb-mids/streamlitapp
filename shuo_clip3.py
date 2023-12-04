@@ -154,7 +154,7 @@ prefix = (
 
     "Based on the the information the user has provided thus far as well as the user's message below, do you have enough information to find an appropriate product from the dataset?"
 
-    "If you don't have more than two information listed above, ask the user questions that will help you find an appropriate product from the dataset. Otherwise, summarize exactly what the user is looking for."
+    "If you don't have more than two information listed above, ask the user questions that will help you find an appropriate product from the dataset. Otherwise, summarize exactly what the user is looking for and confirm the final information."
 
     "Here is the user's message: "
 )
