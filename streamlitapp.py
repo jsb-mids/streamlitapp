@@ -88,7 +88,7 @@ for idx, message in enumerate(st.session_state.messages):
             with col2:
                 thumbs_down_clicked = st.form_submit_button("👎 Not quite")
             with col3:
-                thumbs_down_clicked = st.form_submit_button("👎 Not quite")
+                thumbs_down_clicked2 = st.form_submit_button("👎 Not quite")
             if thumbs_up_clicked:
                 form.empty()
                 form.success("Thanks for your feedback!")
