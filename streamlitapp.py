@@ -81,12 +81,14 @@ for idx, message in enumerate(st.session_state.messages):
         form_key = f"feedback_form_{form_id}"
         form = st.form(key=form_key, clear_on_submit=True)
         with form:
-            form.write("Was this helpful?")
-            col1, col2 = st.columns(2)
+            form.write("Did you find what you were looking for?")
+            col1, col2, col3 = st.columns(3)
             with col1:
-                thumbs_up_clicked = st.form_submit_button("👍 Thumbs Up")
+                thumbs_up_clicked = st.form_submit_button("👍 Yep!")
             with col2:
-                thumbs_down_clicked = st.form_submit_button("👎 Thumbs Down")
+                thumbs_down_clicked = st.form_submit_button("👎 Not quite")
+            with col3:
+                thumbs_down_clicked = st.form_submit_button("👎 Not quite")
             if thumbs_up_clicked:
                 form.empty()
                 form.success("Thanks for your feedback!")
