@@ -86,7 +86,7 @@ for idx, message in enumerate(st.session_state.messages):
         form = st.form(key=form_key, clear_on_submit=True)
         with form:
             form.write("Did you find what you were looking for?")
-            col1, col2 = st.columns(2)
+            col1, col2 = st.columns(2, gap="medium")
             with col1:
                 thumbs_up_clicked = st.form_submit_button("👍 Yep!")
             with col2:
