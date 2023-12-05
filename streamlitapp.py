@@ -91,6 +91,16 @@ for idx, message in enumerate(st.session_state.messages):
                 thumbs_up_clicked = st.form_submit_button("👍 Yep!")
             with col2:
                 thumbs_down_clicked = st.form_submit_button("👎 Not quite")
+                st.markdown(
+                            """
+                        <style>
+                            div[data-testid="column"] div[data-testid="baseButton-secondaryFormSubmit"] {
+                                border: 1px solid red;
+                            }
+                        </style>
+                        """,
+                            unsafe_allow_html=True,
+                        )
             if thumbs_up_clicked:
                 form.empty()
                 form.success("Thanks for your feedback!")
@@ -109,3 +119,15 @@ if st.session_state.messages[-1]["role"] == "user":
             st.write(response)
             message = {"role": "assistant", "content": response}
             st.session_state.messages.append(message)  # Add response to message history
+
+
+st.markdown(
+    """
+<style>
+    div[data-testid="column"] div[data-testid="baseButton-secondaryFormSubmit"] {
+        border: 1px solid red;
+    }
+</style>
+""",
+    unsafe_allow_html=True,
+)
