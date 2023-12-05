@@ -95,7 +95,7 @@ for idx, message in enumerate(st.session_state.messages):
                             """
                         <style>
                             div[data-testid="column"]:nth-child(2) {
-                                border: 1px solid red;
+                                padding-left: 220px;
                             }
                         </style>
                         """,
