@@ -119,15 +119,3 @@ if st.session_state.messages[-1]["role"] == "user":
             st.write(response)
             message = {"role": "assistant", "content": response}
             st.session_state.messages.append(message)  # Add response to message history
-
-
-st.markdown(
-    """
-<style>
-    div[data-testid="column"] div[data-testid="baseButton-secondaryFormSubmit"] {
-        border: 1px solid red;
-    }
-</style>
-""",
-    unsafe_allow_html=True,
-)
