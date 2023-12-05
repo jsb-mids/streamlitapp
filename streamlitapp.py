@@ -94,7 +94,7 @@ for idx, message in enumerate(st.session_state.messages):
                 st.markdown(
                             """
                         <style>
-                            div[data-testid="column"] {
+                            div[data-testid="column"]:nth-child(2) {
                                 border: 1px solid red;
                             }
                         </style>
