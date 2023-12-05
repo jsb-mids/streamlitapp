@@ -14,7 +14,7 @@ st.title("Chat with our furniture finder")
 
 if "messages" not in st.session_state.keys(): # Initialize the chat messages history
     st.session_state.messages = [
-        {"role": "assistant", "content": "How can I help?", "avatar": st.image('./logos/Chatbot Logo.png')}
+        {"role": "assistant", "content": "How can I help?", "avatar": st.image('logos/Chatbot Logo.png')}
     ]
 
 prompt = st.chat_input("Your question")
