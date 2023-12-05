@@ -10,11 +10,10 @@ import time
 fastapi_base_url = os.getenv("FASTAPI_BASE_URL", "http://52.53.163.66:80")
 
 page_icon = Image.open("logos/Business Logo.png")
+chat_icon = Image.open("logos/Chatbot Logo.png")
 
 st.set_page_config(page_title="Chat with our furniture finder", page_icon=page_icon, layout="centered", initial_sidebar_state="auto", menu_items=None)
 st.title("Chat with our furniture finder")
-
-chat_icon = Image.open("logos/Chatbot Logo.png")
 
 if "messages" not in st.session_state.keys(): # Initialize the chat messages history
     st.session_state.messages = [

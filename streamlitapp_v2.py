@@ -9,7 +9,10 @@ import time
 # Load the base URL from the environment variable
 fastapi_base_url = os.getenv("FASTAPI_BASE_URL", "http://50.18.234.193:80")
 
-st.set_page_config(page_title="Chat with our furniture finder", page_icon="🦙", layout="centered", initial_sidebar_state="auto", menu_items=None)
+page_icon = Image.open("logos/Business Logo.png")
+chat_icon = Image.open("logos/Chatbot Logo.png")
+
+st.set_page_config(page_title="Chat with our furniture finder", page_icon=page_icon, layout="centered", initial_sidebar_state="auto", menu_items=None)
 st.title("Chat with our furniture finder")
 st.sidebar.markdown(
     "My Logo (sidebar) should be on top of the Navigation within the sidebar"
@@ -84,12 +87,22 @@ for idx, message in enumerate(st.session_state.messages):
         form_key = f"feedback_form_{form_id}"
         form = st.form(key=form_key, clear_on_submit=True)
         with form:
-            form.write("Was this helpful?")
-            col1, col2 = st.columns(2)
+            form.write("Did you find what you were looking for?")
+            col1, col2 = st.columns(2, gap="medium")
             with col1:
-                thumbs_up_clicked = st.form_submit_button("👍 Thumbs Up")
+                thumbs_up_clicked = st.form_submit_button("👍 Yep!")
             with col2:
-                thumbs_down_clicked = st.form_submit_button("👎 Thumbs Down")
+                thumbs_down_clicked = st.form_submit_button("👎 Not quite")
+                st.markdown(
+                            """
+                        <style>
+                            div[data-testid="column"]:nth-child(2) {
+                                padding-left: 210px;
+                            }
+                        </style>
+                        """,
+                            unsafe_allow_html=True,
+                        )
             if thumbs_up_clicked:
                 form.empty()
                 form.success("Thanks for your feedback!")
@@ -97,7 +110,7 @@ for idx, message in enumerate(st.session_state.messages):
                 form.empty()
                 form.write("Sorry, that wasn't helpful. Do you mind providing more details on what you're looking for?")
     else:
-        with st.chat_message(message["role"]):
+        with st.chat_message(message["role"], avatar=chat_icon):
             st.write(message["content"])
 
 # If the last message is not from the assistant, generate a new response

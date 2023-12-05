@@ -7,6 +7,7 @@ from operator import itemgetter
 import time
 import openai
 import os
+from langchain.chat_models import ChatOpenAI
 from dotenv import load_dotenv, find_dotenv
 
 load_dotenv(find_dotenv())
