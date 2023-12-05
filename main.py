@@ -3,7 +3,8 @@ import pandas as pd
 from datetime import datetime
 from typing import List
 
-from shuo_clip3 import get_response
+#from shuo_clip3 import get_response
+from gpt_clip import get_response
 from productDetails import get_product_details
 
 from fastapi import FastAPI
