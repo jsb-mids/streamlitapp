@@ -9,8 +9,12 @@ import time
 # Load the base URL from the environment variable
 fastapi_base_url = os.getenv("FASTAPI_BASE_URL", "http://52.53.163.66:80")
 
-st.set_page_config(page_title="Chat with our furniture finder", page_icon="🦙", layout="centered", initial_sidebar_state="auto", menu_items=None)
+page_icon = Image.open("logos/Business Logo.png")
+
+st.set_page_config(page_title="Chat with our furniture finder", page_icon=page_icon, layout="centered", initial_sidebar_state="auto", menu_items=None)
 st.title("Chat with our furniture finder")
+
+chat_icon = Image.open("logos/Chatbot Logo.png")
 
 if "messages" not in st.session_state.keys(): # Initialize the chat messages history
     st.session_state.messages = [
@@ -94,12 +98,12 @@ for idx, message in enumerate(st.session_state.messages):
                 form.empty()
                 form.write("Sorry, that wasn't helpful. Do you mind providing more details on what you're looking for?")
     else:
-        with st.chat_message(message["role"]):
+        with st.chat_message(message["role"], avatar=chat_icon):
             st.write(message["content"])
 
 # If the last message is not from the assistant, generate a new response
 if st.session_state.messages[-1]["role"] == "user":
-    with st.chat_message("assistant", avatar=st.image('logos/Chatbot Logo.png')):
+    with st.chat_message("assistant"):
         with st.spinner("Thinking..."):
             response = assistant_response["content"]  # Get the assistant's response from the dictionary
             st.write(response)
