@@ -94,7 +94,7 @@ for idx, message in enumerate(st.session_state.messages):
                 st.markdown(
                             """
                         <style>
-                            div[data-testid="column"] div[data-testid="baseButton-secondaryFormSubmit"] {
+                            div[data-testid="column"] {
                                 border: 1px solid red;
                             }
                         </style>
