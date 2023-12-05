@@ -167,7 +167,7 @@ def get_response(message):
             {"role": "user", "content": f"{prefix} {message}"},
         )
         chat = openai.ChatCompletion.create(
-            model="gpt-3.5-turbo", messages=messages
+            model="gpt-3.5-turbo-1106", messages=messages
         )
 
         bot_reply = chat.choices[0].message.content
