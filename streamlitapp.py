@@ -99,7 +99,7 @@ for idx, message in enumerate(st.session_state.messages):
 
 # If the last message is not from the assistant, generate a new response
 if st.session_state.messages[-1]["role"] == "user":
-    with st.chat_message("assistant", avatar=st.image('logos/Chatbot Logo.png')):
+    with st.chat_message("assistant", avatar=st.image('./logos/Chatbot Logo.png')):
         with st.spinner("Thinking..."):
             response = assistant_response["content"]  # Get the assistant's response from the dictionary
             st.write(response)
