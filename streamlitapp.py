@@ -94,7 +94,7 @@ for idx, message in enumerate(st.session_state.messages):
                 form.empty()
                 form.write("Sorry, that wasn't helpful. Do you mind providing more details on what you're looking for?")
     else:
-        with st.chat_message(message["role"], avatar=st.image('logos/Chatbot Logo.png')):
+        with st.chat_message(message["role"]):
             st.write(message["content"])
 
 # If the last message is not from the assistant, generate a new response
