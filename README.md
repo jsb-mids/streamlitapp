@@ -29,7 +29,7 @@ Link to the pickle files: https://ucbischool.slack.com/archives/C05QVDG4BGF/p169
 ## Step 4: Run the code.
 In three separate terminals run the following commands. Make sure that you create the poetry virtual env in each terminal firs via the poetry shell command.
 ```bash
-uvicorn main:app
+uvicorn main:app --host 127.0.0.1 --port 8080 --reload
 
 redis-server
 
