@@ -7,7 +7,7 @@ import time
 
 
 # Load the base URL from the environment variable
-fastapi_base_url = os.getenv("FASTAPI_BASE_URL", "http://52.53.161.242:80")
+fastapi_base_url = os.getenv("FASTAPI_BASE_URL", "http://13.52.219.240:80")
 
 page_icon = Image.open("logos/Business Logo.png")
 chat_icon = Image.open("logos/Chatbot Logo.png")
