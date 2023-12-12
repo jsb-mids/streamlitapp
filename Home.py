@@ -7,7 +7,7 @@ st.set_page_config(
 )
 page_icon = Image.open("logos/ShopBuddy.png")
 
-st.write("# Reimagine your shopping experience with ShopBuddy!")
+st.write("# ShopBuddy: Reimagine your shopping experience!")
 
 st.markdown(
     """
