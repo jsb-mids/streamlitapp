@@ -7,7 +7,7 @@ st.set_page_config(
 )
 page_icon = Image.open("logos/ShopBuddy.png")
 
-st.write("# Welcome to ShopBuddy!")
+st.write("# Reimagine your shopping experience with ShopBuddy!")
 
 st.markdown(
     """
@@ -19,14 +19,14 @@ st.markdown(
     
     ### Problem and Motivation 
     In the realm of artificial intelligence, the transformational impact is widespread, and one of the areas where this evolution is distinctly felt is the area of online shopping. Presently, users navigate through traditional websites using search queries and filters, often encountering a cumbersome and less-than-optimal buying experience.  
+    
+    We found opportunities for value adds: 
+    - Enhance user shopping experience through interactive chatbot leveraging Generative AI
+    - Opportunity to Integrate large language model (LLM) in a B2C market
 
-    Recognizing the potential for improvement, our project centers on harnessing the power of Large Language Models (LLMs) to elevate and streamline the furniture shopping experience. This focus is particularly pertinent given the complex nature of furniture shopping, involving multi-dimensional and multi-model search challenges.
+    Our project centers on harnessing the power of Large Language Models (LLMs) to elevate and streamline the furniture shopping experience. This focus is particularly pertinent given the complex nature of furniture shopping, involving multi-dimensional and multi-model search challenges.
 
-    While there is no dearth of online furniture shopping platforms today, shoppers often have to:
-
-    - Navigate through website experiences on different platforms of varying sophistication
-    - Browse through a large inventory of items themselves to find a match
-    - Walk into physical store(s) to continue their research before they finally make a purchase
+    
 
 """
 )
