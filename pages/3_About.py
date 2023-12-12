@@ -46,6 +46,7 @@ for i, data in enumerate(image_data):
 st.markdown(
     """
     ### Who are we
-    We are a group of graduate students in the MIDS program at UC Berkeley who teamed up together on a capstone project to bring Shop Buddy to life.
+    We are a group of graduate students in the MIDS program at UC Berkeley who are passionate about the intersection of Generative AI and retail marketplace. Through ShopBuddy, we aim to allow retailers to achieve overall growth by providing its customers with customized and enhanced experience.
 """
 )
+
