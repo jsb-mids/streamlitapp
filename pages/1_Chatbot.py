@@ -6,8 +6,8 @@ from io import BytesIO
 import time 
 
 
-# Load the base URL from the environment variable
-fastapi_base_url = os.getenv("FASTAPI_BASE_URL", "http://18.144.132.247:80")
+# Load the base URL
+fastapi_base_url = "http://18.144.132.247:80"
 
 page_icon = Image.open("logos/ShopBuddy.png")
 chat_icon = Image.open("logos/ShopBuddy.png")
@@ -74,8 +74,16 @@ for idx, message in enumerate(st.session_state.messages):
                         container_html = f'<div><h6>{caption}</h6><a href="{href}" target="_blank" style="display: block;"><img src="{image_url}" alt="{caption}" /><div></div></a></div><br>'
                         # Render the HTML container
                         st.markdown(container_html, unsafe_allow_html=True)
-                        # col.write(f"{title}: ${price}")
-                        # col.image(image, caption=caption, use_column_width=True)
+                        st.markdown(
+                            """
+                        <style>
+                            div[data-testid="stHorizontalBlock"] {
+                                gap: 0px !important;
+                            }
+                        </style>
+                        """,
+                            unsafe_allow_html=True,
+                        )
                     else:
                         col.write("Failed to load image response.")
                 start_idx = end_idx
