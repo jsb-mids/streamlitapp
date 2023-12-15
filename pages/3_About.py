@@ -10,7 +10,7 @@ st.title("About Us")
 st.markdown(
     """
     ### Our Mission
-    We are reimagining how users shop online and aim to simply the tiresome furniture shopping journey
+    We are reimagining how users shop online and we aim to simplify the tiresome furniture shopping journey
 
     ### Meet the team
 """
@@ -46,9 +46,9 @@ for i, data in enumerate(image_data):
 st.markdown(
     """
     ### Who are we
-    We are a group of graduate students in the MIDS program at UC Berkeley who are passionate about the intersection of Generative AI and retail marketplace. 
+    We are a group of graduate students in the MIDS program at UC Berkeley who are passionate about the intersection of Generative AI and the retail marketplace. 
     
-    Through ShopBuddy, we aim to allow retailers to achieve overall growth by providing its customers with customized and enhanced experience.
+    Through ShopBuddy, we aim to allow retailers to achieve overall growth by providing their customers with a customized and enhanced experience.
 """
 )
 

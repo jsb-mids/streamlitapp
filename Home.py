@@ -13,12 +13,12 @@ st.markdown(
     """
     **👈 Navigate to Chatbot on the sidebar** to see what ShopBuddy can do!
     ### ShopBuddy is a smart AI shopping expert
-    Our Chatbot provides a personalized experience as it interacts with Natural Language through the power of LLM, fine tuned on industry specific furniture data and imate retrieval, returns relevant images & actively changes search results based on user input through text -to-image CLIP model. We package it up with an interactive user interface that is easy to use by providing users with clickable furniture items to provide a smooth purchasing experience. We aim to solve identified gaps, such that online shoppers will: 
+    Our Chatbot provides a personalized experience as it interacts with Natural Language through the power of LLM, fine-tuned on industry-specific furniture data and image retrieval, returns relevant images & actively changes search results based on user input through text-to-image CLIP model. We package it up with an interactive user interface that is easy to use by providing users with clickable furniture items for a smooth purchasing experience. We aim to solve identified gaps, such that online shoppers will: 
     - Have a consistent and simple user experience irrespective of the furniture retailer
     - Be able to converse and express their needs to quickly find what they are looking for
     
     ### Problem and Motivation 
-    In the realm of artificial intelligence, the transformational impact is widespread, and one of the areas where this evolution is distinctly felt is the area of online shopping. Presently, users navigate through traditional websites using search queries and filters, often encountering a cumbersome and less-than-optimal buying experience.  
+    In the realm of artificial intelligence, the transformational impact is widespread, and one of the areas where this evolution is distinctly felt is the area of online shopping. Presently, users navigate traditional websites using search queries and filters, often encountering a cumbersome and less-than-optimal buying experience.  
     
     We found opportunities for value adds: 
     - Enhance user shopping experience through interactive chatbot leveraging Generative AI
